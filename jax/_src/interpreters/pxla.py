@@ -2438,7 +2438,8 @@ def _get_out_sharding_from_orig_sharding(
   orig_handler = _orig_out_sharding_handlers[type(orig_in_s)]
   for o, out_aval, from_xla in safe_zip(out_shardings, out_avals,
                                         are_out_sharding_from_xla):
-    if isinstance(o, sharding_impls.GSPMDSharding):
+    if (isinstance(o, sharding_impls.GSPMDSharding) and
+        out_aval is not core.abstract_token):
       try:
         # Only return the same input sharding object if the OpShardings and
         # in_aval.ndim and out_aval.ndim match. This is because if OpSharding is
